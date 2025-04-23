@@ -1,34 +1,25 @@
 cmake_minimum_required(VERSION 3.14...3.25)
 
-# プロジェクト情報
-project(cpp_learn VERSION 0.1.0
-                   DESCRIPTION "C++学習用サンプルプロジェクト"
-                   LANGUAGES CXX)
+#プロジェクト情報
+    project(cpp_learn VERSION 0.1.0 DESCRIPTION "C++学習用サンプルプロジェクト" LANGUAGES CXX)
 
-# C++17 を指定
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+#C++ 17 を指定
+        set(CMAKE_CXX_STANDARD 17) set(CMAKE_CXX_STANDARD_REQUIRED ON) set(CMAKE_CXX_EXTENSIONS OFF)
 
-# プロジェクトがメインプロジェクトの場合の設定
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-    # テストを有効化
-    include(CTest)
-    
-    # IDE でのフォルダ表示を改善
-    set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-endif()
+#プロジェクトがメインプロジェクトの場合の設定
+            if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+#テストを有効化
+                include(CTest)
 
-# サブディレクトリを追加
-add_subdirectory(src)
+#IDE でのフォルダ表示を改善
+                    set_property(GLOBAL PROPERTY USE_FOLDERS ON) endif()
 
-# テストを有効にする
-if(BUILD_TESTING)
-    add_subdirectory(tests)
-endif()
+#サブディレクトリを追加
+                        add_subdirectory(src)
 
-# アプリケーションを追加
-option(BUILD_APPS "アプリケーションをビルドする" ON)
-if(BUILD_APPS)
-    add_subdirectory(apps)
-endif()
+#テストを有効にする
+                            if (BUILD_TESTING) add_subdirectory(tests) endif()
+
+#アプリケーションを追加
+                                option(BUILD_APPS "アプリケーションをビルドする" ON) if (BUILD_APPS)
+                                    add_subdirectory(apps) endif()

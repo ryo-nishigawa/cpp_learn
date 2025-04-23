@@ -36,15 +36,15 @@ std::vector<std::string> StringUtils::split(const std::string& input, char delim
     std::vector<std::string> tokens;
     std::string::size_type start = 0;
     std::string::size_type end = 0;
-    
+
     while ((end = input.find(delimiter, start)) != std::string::npos) {
         tokens.push_back(input.substr(start, end - start));
         start = end + 1;
     }
-    
+
     // 最後のトークンを追加（または入力文字列に区切り文字がない場合）
     tokens.push_back(input.substr(start));
-    
+
     return tokens;
 }
 
