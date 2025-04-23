@@ -1,0 +1,34 @@
+# ビルドディレクトリ
+/build*/
+/install*/
+/out/
+
+# IDE 設定
+/.vs/
+/.vscode/
+/.idea/
+/cmake-build-*/
+/*.xcodeproj
+/*.xcworkspace
+
+# コンパイル済みファイル
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+*.exe
+
+# CMake 生成ファイル
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+Makefile
+*.cmake
+!cmake/*.cmake
+
+# その他
+.DS_Store
