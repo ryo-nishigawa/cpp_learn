@@ -1,49 +1,34 @@
-cmake_minimum_required(VERSION 3.14...3.25)
+# ヘッダーファイルを検索
+file(GLOB_RECURSE HEADER_FILES 
+     "${CMAKE_CURRENT_SOURCE_DIR}/../include/*.hpp"
+     "${CMAKE_CURRENT_SOURCE_DIR}/../include/*.h")
 
-# プロジェクト情報
-project(cpp_learn VERSION 0.1.0
-                   DESCRIPTION "C++学習用サンプルプロジェクト"
-                   LANGUAGES CXX)
+# ソースファイルを検索
+file(GLOB_RECURSE SOURCE_FILES 
+     "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
+     "${CMAKE_CURRENT_SOURCE_DIR}/*.cxx"
+     "${CMAKE_CURRENT_SOURCE_DIR}/*.cc")
 
-# C++17 を指定
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+# ライブラリを作成
+add_library(${PROJECT_NAME} ${SOURCE_FILES} ${HEADER_FILES})
 
-# プロジェクトがメインプロジェクトの場合の設定
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-    # テストを有効化
-    include(CTest)
-    
-    # IDE でのフォルダ表示を改善
-    set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-endif()
+# インクルードパスを設定
+target_include_directories(${PROJECT_NAME} 
+    PUBLIC 
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
+        $<INSTALL_INTERFACE:include>
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-# サブディレクトリを追加
-add_subdirectory(src)
+# インストール設定
+install(TARGETS ${PROJECT_NAME}
+        EXPORT ${PROJECT_NAME}Targets
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include)
 
-# テストを有効にする
-if(BUILD_TESTING)
-    add_subdirectory(tests)
-endif()
-
-# アプリケーションを追加
-option(BUILD_APPS "アプリケーションをビルドする" ON)
-if(BUILD_APPS)
-    add_subdirectory(apps)
-endif()
-
-# Git hooks設定
-find_package(Git QUIET)
-if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
-    # Git hooksへのパスを設定
-    set(GIT_HOOKS_DIR "${PROJECT_SOURCE_DIR}/.githooks")
-    
-    # pre-commitフックを設定
-    execute_process(
-        COMMAND ${GIT_EXECUTABLE} config core.hooksPath ${GIT_HOOKS_DIR}
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-    )
-    
-    message(STATUS "Git hooks enabled: ${GIT_HOOKS_DIR}")
-endif()
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../include/
+        DESTINATION include
+        FILES_MATCHING PATTERN "*.h*")
